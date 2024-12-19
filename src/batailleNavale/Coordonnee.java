@@ -22,9 +22,9 @@ public class Coordonnee implements Comparable<Coordonnee> {
 	}
 
 	public Coordonnee(int ligne, int colonne) {
-		if (ligne < 0 || ligne >= 26 || colonne < 0 || colonne >= 26) {
-			throw new IllegalArgumentException("Les indices de ligne et de colonne doivent être entre 0 et 25 inclus: " + ligne + "lignes, " + colonne + " colonnes");
-		}
+//		if (ligne < 1 || ligne > 26 || colonne < 1 || colonne > 26) {
+//			throw new IllegalArgumentException("Les indices de ligne et de colonne doivent être entre 1 et 26 inclus: " + ligne + " lignes, " + colonne + " colonnes");
+//		}
 		this.ligne = ligne;
 		this.colonne = colonne;
 
@@ -48,9 +48,16 @@ public class Coordonnee implements Comparable<Coordonnee> {
 		// System.out.println(colonne);
 		// System.out.println(ligne);
 
-		if (l < 0 || l > 25) {
-			throw new IllegalArgumentException("Le chiffre doit entre entre 0 et 25 inclus : " + ligne);
+//		try {
+		if (l < 1 || l > 26) {
+			throw new IllegalArgumentException("Le chiffre doit entre entre 1 et 26 inclus : " + ligne);
 		}
+//		}catch(Exception e){
+//			System.out.println("Le chiffre doit entre entre 1 et 26 inclus : " + ligne);
+//			System.out.println("On passe le tour pour l'instant");
+//			Scanner sc = new Scanner(System.in);
+//			String str = sc.nextLine().trim().toUpperCase();
+//		}
 	}
 
 	public String toString() {

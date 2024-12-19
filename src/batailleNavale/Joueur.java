@@ -42,7 +42,7 @@ public abstract class Joueur {
     	   
       deroulementJeu(this, j);
      }else {
-	System.out.println("opponent invalid");
+	           throw new IllegalArgumentException("Joueur cannot be null");
      }
 }
      
@@ -67,5 +67,5 @@ protected abstract void retourDefense(Coordonnee c, int etat);
 public abstract Coordonnee choixAttaque();
 
 
-public abstract int defendre(Coordonnee c); }
+ public abstract int defendre(Coordonnee c); }
  

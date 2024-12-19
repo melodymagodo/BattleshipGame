@@ -15,11 +15,12 @@ public class Navire {
 		if (longueur <= 1) {
 			throw new IllegalArgumentException("Bateau trop petit! (2 cases minimum)");
 		}
-		if (estVertical)
-			this.fin = new Coordonnee(debut.getLigne() + longueur - 1, debut.getColonne());
-		else
-			this.fin = new Coordonnee(debut.getLigne(), debut.getColonne() + longueur - 1);
 		this.debut = debut;
+		if (estVertical) {
+			this.fin = new Coordonnee(debut.getLigne()+ longueur,debut.getColonne());
+		}else {
+			this.fin= new Coordonnee(debut.getLigne(),debut.getColonne()+ longueur);
+		}
 		this.partiesTouchees = new Coordonnee[longueur];// initialize the part to track the parts that have been hit
 		this.nbTouchees = 0;// at the beginning no parts are hit
 
@@ -52,6 +53,13 @@ public class Navire {
 		// Getter for the ending coordinate (fin).
 		return fin;
 	}
+	
+	public int longueur(boolean i) {
+		if (i)
+			return fin.getLigne()-debut.getLigne();
+		else
+			return fin.getColonne()-debut.getColonne();
+	}
 
 	public boolean estVertical() {
 		// retourne true si et seulement si le navire est vertical.
@@ -70,33 +78,30 @@ public class Navire {
 	public boolean touche(Navire n) {
 		// Retourne true si et seulement si this est adjacent à n. L'adjacence par la
 		// diagonale ne compte pas.
-		boolean adjacenceHorizontale = (debut.getColonne() == n.fin.getColonne() + 1
-				|| fin.getColonne() == n.debut.getColonne() - 1);
-
-		boolean adjacenceVerticale = (debut.getLigne() == n.fin.getLigne() + 1
-				|| fin.getLigne() == n.debut.getLigne() - 1);
-
-		boolean chevauchementHorizontal = (fin.getColonne() >= n.debut.getColonne()
-				&& debut.getColonne() <= n.fin.getColonne());
-
-		boolean chevauchementVertical = (fin.getLigne() >= n.debut.getLigne() && debut.getLigne() <= n.fin.getLigne());
-
-		return (adjacenceHorizontale && chevauchementVertical) || (adjacenceVerticale && chevauchementHorizontal);
+		return (((n.debut.getLigne() <= this.debut.getLigne() && n.fin.getLigne() >= this.debut.getLigne())
+				|| (this.debut.getLigne() <= n.debut.getLigne() && this.fin.getLigne() >= n.debut.getLigne()))
+				&& (n.debut.getColonne() == this.fin.getColonne() + 1
+						|| this.debut.getColonne() == n.fin.getColonne() + 1))
+				|| (((n.debut.getColonne() <= this.debut.getColonne() && n.fin.getColonne() >= this.debut.getColonne())
+						|| (this.debut.getColonne() <= n.debut.getColonne()
+								&& this.fin.getColonne() >= n.debut.getColonne()))
+						&& (n.debut.getLigne() == this.fin.getLigne() + 1
+								|| this.debut.getLigne() == n.fin.getLigne() + 1));
 	}
+
+		
+
 
 	public boolean chevauche(Navire n) {
 		// Returns true if the current ship and the given ship (n) overlap.
-
-		boolean chevauchementVerticale = (fin.getColonne() >= n.debut.getColonne()
-				&& debut.getColonne() <= n.fin.getColonne())
-				&& (debut.getLigne() == n.fin.getLigne() || fin.getLigne() == n.debut.getLigne());
-
-		boolean chevauchementHorizontale = (fin.getLigne() >= n.debut.getLigne()
-				&& debut.getLigne() <= n.fin.getLigne())
-				&& (debut.getColonne() == n.fin.getColonne() || fin.getColonne() == n.debut.getColonne());
-
-		return chevauchementHorizontale || chevauchementVerticale;
+		return ((n.debut.getLigne() <= this.debut.getLigne() && n.fin.getLigne() >= this.debut.getLigne())
+				|| (this.debut.getLigne() <= n.debut.getLigne() && this.fin.getLigne() >= n.debut.getLigne()))
+				&& ((n.debut.getColonne() <= this.debut.getColonne() && n.fin.getColonne() >= this.debut.getColonne())
+						|| (this.debut.getColonne() <= n.debut.getColonne()
+								&& this.fin.getColonne() >= n.debut.getColonne()));
 	}
+		
+	
 
 	public boolean recoitTir(Coordonnee c) {
 		// Updates the state of the ship when it receives a shot at coordinate c.
@@ -131,8 +136,12 @@ public class Navire {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Navire navire1 = new Navire(new Coordonnee(2, 2), 5, false);
-		System.out.println(navire1);
+		Coordonnee c = new Coordonnee(2,3);
+		Coordonnee c2 = new Coordonnee(3,4);
+		Navire n = new Navire(c, 5, true);
+		Navire n2 = new Navire(c2, 5, true);
+		System.out.println(n.touche(n2));
+
 	}
 
 }
